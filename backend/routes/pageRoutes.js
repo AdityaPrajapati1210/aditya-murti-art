@@ -215,4 +215,9 @@ router.get('/sitemap.xml', (req, res) => {
 </urlset>`);
 });
 
+// Google Search Console Verification HTML route
+router.get('/googlecd3a77e559352496.html', (req, res) => {
+  res.send('google-site-verification: googlecd3a77e559352496.html');
+});
+
 module.exports = router;
