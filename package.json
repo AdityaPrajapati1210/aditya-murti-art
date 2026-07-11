@@ -1,0 +1,13 @@
+{
+  "name": "jeetendra-clay-studio",
+  "version": "1.0.0",
+  "description": "Full-stack portfolio for Jeetendra Prajapati Clay Art Studio",
+  "scripts": {
+    "install-deps": "npm install --prefix backend",
+    "start": "npm start --prefix backend",
+    "dev": "npm run dev --prefix backend",
+    "seed": "npm run seed --prefix backend"
+  },
+  "author": "Jeetendra Prajapati",
+  "license": "ISC"
+}

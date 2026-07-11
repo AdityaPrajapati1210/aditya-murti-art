@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= typeof title !== 'undefined' ? title : 'Aditya Murti Art | Mitti Murti Masterpieces' %></title>
+  <meta name="description" content="<%= typeof metaDesc !== 'undefined' ? metaDesc : 'Official website of Jeetendra Prajapati Clay Art Studio, based in Bhiti Mau, UP. Custom handmade clay murti, religious idols, custom bust models, and terracotta art.' %>">
+  
+  <!-- SEO Canonical Link -->
+  <link rel="canonical" href="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://adityamurtiart.com' %>">
+  
+  <!-- Open Graph / Facebook Social Sharing -->
+  <meta property="og:title" content="<%= typeof title !== 'undefined' ? title : 'Aditya Murti Art | Mitti Murti Masterpieces' %>">
+  <meta property="og:description" content="<%= typeof metaDesc !== 'undefined' ? metaDesc : 'Official website of Jeetendra Prajapati Clay Art Studio, based in Bhiti Mau, UP. Custom handmade clay murti, religious idols, custom bust models, and terracotta art.' %>">
+  <meta property="og:image" content="https://adityamurtiart.com/images/Gemini_Generated_Image_v4xz2kv4xz2kv4xz.png">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= typeof canonicalUrl !== 'undefined' ? canonicalUrl : 'https://adityamurtiart.com' %>">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+
+  <!-- LocalBusiness Schema Markup (Google Structured Data) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Aditya Murti Art",
+    "image": "https://adityamurtiart.com/images/Gemini_Generated_Image_v4xz2kv4xz2kv4xz.png",
+    "@id": "https://adityamurtiart.com/#localbusiness",
+    "url": "https://adityamurtiart.com",
+    "telephone": "+919889554521",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Bhiti Mau",
+      "addressLocality": "Mau",
+      "addressRegion": "Uttar Pradesh",
+      "postalCode": "275101",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 25.94167,
+      "longitude": 83.56111
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "21:00"
+    },
+    "sameAs": [
+      "https://maps.app.goo.gl/hdnsjytrczXEGbeH8"
+    ]
+  }
+  </script>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar" id="navbar">
+    <div class="max-w-7xl px-6 nav-container">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="nav-logo">
+        <span class="logo-title">ADITYA MURTI ART</span>
+        <span class="logo-subtitle">Jeetendra Prajapati</span>
+      </a>
+
+      <!-- Desktop Links -->
+      <div class="nav-menu">
+        <a href="/" class="nav-link <%= activePage === 'home' ? 'active' : '' %>">Home</a>
+        <a href="/about" class="nav-link <%= activePage === 'about' ? 'active' : '' %>">About</a>
+        <a href="/services" class="nav-link <%= activePage === 'services' ? 'active' : '' %>">Services</a>
+        <a href="/gallery" class="nav-link <%= activePage === 'gallery' ? 'active' : '' %>">Gallery</a>
+        <a href="/book" class="nav-link <%= activePage === 'book' ? 'active' : '' %>">Book Consultation</a>
+        <a href="/contact" class="nav-link <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
+        
+        <!-- Admin Section Link -->
+        <% if (isAuthenticated) { %>
+          <div style="display: flex; align-items: center; gap: 0.75rem; margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--studio-beige);">
+            <a href="/admin/dashboard" class="admin-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+              Dashboard
+            </a>
+            <a href="/admin/logout" class="logout-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Logout
+            </a>
+          </div>
+        <% } else { %>
+          <a href="/admin/login" class="nav-link <%= activePage === 'admin-login' ? 'active' : '' %>" style="margin-left: 1rem; padding-left: 1rem; border-left: 1px solid var(--studio-beige); color: rgba(45, 27, 20, 0.45);">Admin</a>
+        <% } %>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button class="nav-toggle" id="menu-toggle" aria-label="Toggle Navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Drawer -->
+    <div class="mobile-nav" id="mobile-nav">
+      <a href="/" class="mobile-nav-link <%= activePage === 'home' ? 'active' : '' %>">Home</a>
+      <a href="/about" class="mobile-nav-link <%= activePage === 'about' ? 'active' : '' %>">About</a>
+      <a href="/services" class="mobile-nav-link <%= activePage === 'services' ? 'active' : '' %>">Services</a>
+      <a href="/gallery" class="mobile-nav-link <%= activePage === 'gallery' ? 'active' : '' %>">Gallery</a>
+      <a href="/book" class="mobile-nav-link <%= activePage === 'book' ? 'active' : '' %>">Book Consultation</a>
+      <a href="/contact" class="mobile-nav-link <%= activePage === 'contact' ? 'active' : '' %>">Contact</a>
+      
+      <% if (isAuthenticated) { %>
+        <div class="mobile-admin">
+          <a href="/admin/dashboard" class="admin-badge" style="justify-content: center; width: 100%; padding: 0.625rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.25rem;"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+            Admin Dashboard
+          </a>
+          <a href="/admin/logout" class="logout-btn" style="justify-content: center; width: 100%; border: 1px solid #fee2e2; border-radius: 4px; padding: 0.625rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.25rem;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+            Logout Admin
+          </a>
+        </div>
+      <% } else { %>
+        <div class="mobile-admin" style="text-align: center;">
+          <a href="/admin/login" class="mobile-nav-link <%= activePage === 'admin-login' ? 'active' : '' %>" style="color: rgba(45, 27, 20, 0.5);">Admin Portal</a>
+        </div>
+      <% } %>
+    </div>
+  </nav>
+
+  <main>

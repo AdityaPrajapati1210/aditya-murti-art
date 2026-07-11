@@ -1,0 +1,1097 @@
+<%- include('partials/header') %>
+
+<section class="py-10 px-6" style="background-color: var(--studio-cream); min-height: 100vh;">
+  <div class="max-w-7xl" style="display: flex; flex-direction: column; gap: 2rem;">
+    
+    <!-- Top Header Banner -->
+    <div class="dashboard-header">
+      <div>
+        <p class="sub">Jeetendra Prajapati Clay Art Studio</p>
+        <h1>Studio Admin Dashboard</h1>
+      </div>
+      <div style="display: flex; gap: 1rem; align-self: flex-start;">
+        <button onclick="window.location.reload()" class="btn btn-chocolate" style="padding: 0.5rem 1rem; font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; gap: 0.25rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+          Refresh Data
+        </button>
+      </div>
+    </div>
+
+    <!-- Tab Selection Row -->
+    <div class="tab-nav">
+      <button class="tab-btn active" onclick="switchTab('overview', this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+        Overview
+      </button>
+      <button class="tab-btn" onclick="switchTab('bookings', this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        Bookings Queue
+      </button>
+      <button class="tab-btn" onclick="switchTab('gallery', this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+        Gallery Uploader
+      </button>
+      <button class="tab-btn" onclick="switchTab('inquiries', this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        Contact Messages
+      </button>
+      <button class="tab-btn" onclick="switchTab('settings', this)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+        Admin Settings
+      </button>
+    </div>
+
+    <!-- PANEL 1: OVERVIEW -->
+    <div id="overview-panel" class="tab-panel space-y-8" style="display: flex; flex-direction: column; gap: 2rem;">
+      <!-- Stats aggregate row -->
+      <div class="stats-summary grid">
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <p class="lbl">Total Bookings</p>
+            <p class="val"><%= stats.totalBookings %></p>
+          </div>
+          <div class="stat-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <p class="lbl">Contact Messages</p>
+            <p class="val"><%= stats.totalInquiries %></p>
+          </div>
+          <div class="stat-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-info">
+            <p class="lbl">Gallery Sculptures</p>
+            <p class="val"><%= stats.totalGalleryItems %></p>
+          </div>
+          <div class="stat-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent lists grids -->
+      <div class="recent-grids grid">
+        <!-- Recent Bookings -->
+        <div class="recent-card-box">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+            Recent Consultations
+          </h3>
+          <div class="recent-list">
+            <% if (recentBookings.length === 0) { %>
+              <p style="font-size: 0.75rem; text-align: center; color: var(--text-muted); padding: 1.5rem 0;">No bookings recorded yet.</p>
+            <% } else { %>
+              <% recentBookings.forEach(b => { %>
+                <div class="recent-item">
+                  <div>
+                    <p class="name"><%= b.fullName %></p>
+                    <p class="meta"><%= b.sculptureType %> • <%= b.preferredSize %></p>
+                  </div>
+                  <button class="recent-btn-view" onclick="openRequestDetailModal('booking', '<%= encodeURIComponent(JSON.stringify(b)) %>')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    View
+                  </button>
+                </div>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Recent Inquiries -->
+        <div class="recent-card-box">
+          <h3>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Recent Inquiries
+          </h3>
+          <div class="recent-list">
+            <% if (recentInquiries.length === 0) { %>
+              <p style="font-size: 0.75rem; text-align: center; color: var(--text-muted); padding: 1.5rem 0;">No inquiry messages received.</p>
+            <% } else { %>
+              <% recentInquiries.forEach(i => { %>
+                <div class="recent-item">
+                  <div>
+                    <p class="name"><%= i.fullName %></p>
+                    <p class="meta">Subject: <%= i.subject %></p>
+                  </div>
+                  <button class="recent-btn-view" onclick="openRequestDetailModal('inquiry', '<%= encodeURIComponent(JSON.stringify(i)) %>')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    View
+                  </button>
+                </div>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: BOOKINGS LIST QUEUE -->
+    <div id="bookings-panel" class="tab-panel queue-box" style="display: none;">
+      <div class="queue-header">
+        <h2>Consultation Bookings Queue</h2>
+        <p>Review, manage, and contact clients who booked sculpting meetings.</p>
+      </div>
+
+      <div class="table-responsive" id="bookings-table-wrapper">
+        <!-- Renders bookings asynchronously or preloaded -->
+      </div>
+    </div>
+
+    <!-- PANEL 3: GALLERY UPLOADER & LIST -->
+    <div id="gallery-panel" class="tab-panel portfolio-split-grid grid" style="display: none;">
+      <!-- Form box -->
+      <div class="portfolio-form-box">
+        <h2 style="font-size: 1.125rem; font-family: var(--font-playfair); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--studio-gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          Upload Sculpture
+        </h2>
+        <div style="height: 1px; width: 3rem; background: var(--studio-gold); margin-bottom: 1.5rem;"></div>
+
+        <form id="gallery-upload-form">
+          <!-- Title -->
+          <div class="form-group">
+            <label for="upload-title">Title *</label>
+            <input type="text" id="upload-title" placeholder="e.g. Ganesha Relief Panel" required />
+          </div>
+
+          <!-- Category -->
+          <div class="form-group">
+            <label for="upload-category">Category *</label>
+            <select id="upload-category" required>
+              <option value="Religious Murti">Religious Murti</option>
+              <option value="Ganesha">Ganesha</option>
+              <option value="Durga Maa">Durga Maa</option>
+              <option value="Kali Maa">Kali Maa</option>
+              <option value="Krishna">Krishna</option>
+              <option value="Saraswati">Saraswati</option>
+              <option value="Lakshmi">Lakshmi</option>
+              <option value="Vishwakarma">Vishwakarma</option>
+            </select>
+          </div>
+
+          <!-- Size Dimensions -->
+          <div class="form-group">
+            <label for="upload-dimensions">Dimensions (e.g. 4 Feet)</label>
+            <input type="text" id="upload-dimensions" placeholder="e.g. 3.5 Feet" />
+          </div>
+
+          <!-- Description -->
+          <div class="form-group">
+            <label for="upload-description">Description *</label>
+            <textarea id="upload-description" rows="3" placeholder="Describe textures, clay grade, dyes..." required></textarea>
+          </div>
+
+          <!-- Image File -->
+          <div class="form-group">
+            <label>Sculpture Image *</label>
+            <div class="file-upload-wrapper">
+              <input type="file" id="imageFile" accept="image/*" required />
+              <div class="file-upload-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span class="text">Click to choose image file</span>
+              </div>
+            </div>
+            <div class="image-preview-box" id="imagePreview" style="display: none;"></div>
+          </div>
+
+          <button type="submit" class="btn btn-chocolate" style="width:100%; padding: 0.75rem; margin-top: 1rem;">
+            Publish to Gallery
+          </button>
+        </form>
+      </div>
+
+      <!-- Scrollable list of existing sculptures -->
+      <div class="portfolio-list-box">
+        <h2 style="font-size: 1.125rem; font-family: var(--font-playfair); margin-bottom: 0.25rem;">Active Sculpture Portfolio</h2>
+        <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 1.5rem;">Below are the items currently live on the public gallery portfolio.</p>
+        
+        <div class="portfolio-items-scroll" id="gallery-items-list">
+          <!-- Populated asynchronously -->
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 4: INQUIRIES LIST -->
+    <div id="inquiries-panel" class="tab-panel queue-box" style="display: none;">
+      <div class="queue-header">
+        <h2>Contact Inquiries Queue</h2>
+        <p>Read and delete message submissions from the visitor contact form.</p>
+      </div>
+
+      <div class="table-responsive" id="inquiries-table-wrapper">
+        <!-- Populated asynchronously -->
+      </div>
+    </div>
+
+    <!-- PANEL 5: ADMIN SETTINGS -->
+    <div id="settings-panel" class="tab-panel queue-box" style="display: none;">
+      <div class="queue-header">
+        <h2>Admin Account Settings</h2>
+        <p>Manage your login credentials and verify mail server settings.</p>
+      </div>
+
+      <div class="portfolio-split-grid grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; margin-top: 1.5rem; width: 100%;">
+        
+        <!-- Change Username Form -->
+        <div class="portfolio-form-box">
+          <h3 style="font-size: 1.125rem; font-family: var(--font-playfair); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--studio-gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Change Username
+          </h3>
+          <div style="height: 1px; width: 3rem; background: var(--studio-gold); margin-bottom: 1.5rem;"></div>
+          
+          <form id="change-username-form">
+            <div class="form-group">
+              <label for="new-username">New Username *</label>
+              <input type="text" id="new-username" placeholder="Enter new username" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <label for="username-confirm-password">Current Password *</label>
+              <input type="password" id="username-confirm-password" placeholder="Confirm with current password" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+            </div>
+            <button type="submit" class="btn btn-chocolate" style="width:100%; padding: 0.75rem; margin-top: 1.5rem; border:none; border-radius:4px; font-weight:600; cursor:pointer;">
+              Update Username
+            </button>
+          </form>
+        </div>
+
+        <!-- Change Password Form -->
+        <div class="portfolio-form-box">
+          <h3 style="font-size: 1.125rem; font-family: var(--font-playfair); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--studio-gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            Change Password
+          </h3>
+          <div style="height: 1px; width: 3rem; background: var(--studio-gold); margin-bottom: 1.5rem;"></div>
+          
+          <form id="change-password-form">
+            <div class="form-group">
+              <label for="current-password">Current Password *</label>
+              <input type="password" id="current-password" placeholder="Enter current password" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <label for="new-password">New Password *</label>
+              <input type="password" id="new-password" placeholder="Enter new password (min 6 chars)" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+            </div>
+            <div class="form-group" style="margin-top: 1rem;">
+              <label for="confirm-new-password">Confirm New Password *</label>
+              <input type="password" id="confirm-new-password" placeholder="Re-enter new password" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+            </div>
+            <button type="submit" class="btn btn-chocolate" style="width:100%; padding: 0.75rem; margin-top: 1.5rem; border:none; border-radius:4px; font-weight:600; cursor:pointer;">
+              Update Password
+            </button>
+          </form>
+        </div>
+
+        <!-- Test Email Config Form -->
+        <div class="portfolio-form-box" style="grid-column: 1 / -1;">
+          <h3 style="font-size: 1.125rem; font-family: var(--font-playfair); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.35rem;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--studio-gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            Test Email Configuration
+          </h3>
+          <div style="height: 1px; width: 3rem; background: var(--studio-gold); margin-bottom: 1.5rem;"></div>
+          
+          <form id="test-email-form">
+            <div class="form-group">
+              <label for="test-recipient">Recipient Email Address *</label>
+              <input type="email" id="test-recipient" placeholder="Enter email to receive test message" required style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px;" />
+              <p style="font-size: 11px; color: var(--text-muted); margin-top: 0.25rem;">This will test if the mail server config (SMTP) works by sending a test message.</p>
+            </div>
+            <button type="submit" class="btn btn-gold" style="padding: 0.75rem 1.5rem; margin-top: 1rem; border:none; border-radius:4px; font-weight:600; cursor:pointer;">
+              Send Test Email
+            </button>
+          </form>
+          <div id="test-email-result" style="margin-top: 1rem; padding: 1rem; border-radius: 4px; display: none;"></div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- MODAL: VIEW DETAILS (BOOKING OR INQUIRY) -->
+<div class="modal-backdrop" id="detail-modal" style="display: none;" onclick="closeDetailModal()">
+  <div class="detail-modal-box" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeDetailModal()">&times;</button>
+    
+    <div>
+      <span class="badge-gold" id="detail-badge">Consultation</span>
+      <h3 id="detail-name" style="margin-top: 0.75rem; font-family: var(--font-playfair); font-size: 1.5rem;">Aditya Prajapati</h3>
+      <p class="meta" id="detail-date">Received: Jan 10, 2026</p>
+    </div>
+
+    <div style="height:1px; background:var(--studio-beige); width:100%;"></div>
+
+    <!-- Specific meta parameters grid -->
+    <div class="detail-meta-grid grid" id="detail-meta-grid">
+      <!-- Injected values -->
+    </div>
+
+    <!-- Message text area -->
+    <div class="detail-body-sec">
+      <h4>Message Body:</h4>
+      <p class="body-text" id="detail-body">"I want to order a custom murti..."</p>
+    </div>
+
+    <!-- Reply Form Section -->
+    <div id="reply-form-container" style="display: none; margin-top: 1.5rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+      <h4 style="margin-bottom: 0.5rem; font-family: var(--font-playfair); font-size: 1.1rem; color: var(--studio-chocolate);">Compose Email Reply</h4>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="reply-subject" style="display:block; font-size:12px; margin-bottom:0.25rem; font-weight:bold; color: var(--studio-chocolate);">Subject</label>
+        <input type="text" id="reply-subject" style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px; background-color: var(--studio-white); color: var(--text-color);" />
+      </div>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label for="reply-message" style="display:block; font-size:12px; margin-bottom:0.25rem; font-weight:bold; color: var(--studio-chocolate);">Message</label>
+        <textarea id="reply-message" rows="5" style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px; font-family:inherit; resize:vertical; background-color: var(--studio-white); color: var(--text-color);"></textarea>
+      </div>
+      <div class="reply-form-actions" style="display: flex; gap: 0.5rem;">
+        <button id="submit-reply-btn" class="btn btn-gold" style="flex-grow: 1;">Send Email Reply</button>
+        <button id="cancel-reply-btn" class="btn btn-chocolate">Cancel</button>
+      </div>
+    </div>
+
+    <div class="detail-modal-actions" id="detail-modal-actions-container" style="margin-top: 1.5rem;">
+      <button id="detail-reply-btn" class="btn btn-gold" style="flex-grow: 1; text-align: center;">Reply via Email</button>
+      <button id="detail-delete-btn" class="btn" style="background-color: #dc3545; color: white;">Delete</button>
+      <button class="btn btn-chocolate" onclick="closeDetailModal()">Close Detail</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: EDIT GALLERY ITEM -->
+<div class="modal-backdrop" id="gallery-edit-modal" style="display: none;" onclick="closeEditModal()">
+  <div class="detail-modal-box" onclick="event.stopPropagation()" style="max-width: 32rem;">
+    <button class="modal-close" onclick="closeEditModal()">&times;</button>
+    
+    <h3 style="font-family: var(--font-playfair); font-size: 1.5rem;">Edit Sculpture Details</h3>
+    
+    <form id="gallery-update-form">
+      <input type="hidden" id="edit-id" />
+      
+      <!-- Title -->
+      <div class="form-group">
+        <label for="edit-title">Title</label>
+        <input type="text" id="edit-title" required />
+      </div>
+
+      <div class="form-group-row" style="margin-bottom:0;">
+        <!-- Category -->
+        <div class="form-group">
+          <label for="edit-category">Category</label>
+          <select id="edit-category" required>
+            <option value="Religious Murti">Religious Murti</option>
+            <option value="Ganesha">Ganesha</option>
+            <option value="Durga Maa">Durga Maa</option>
+            <option value="Kali Maa">Kali Maa</option>
+            <option value="Krishna">Krishna</option>
+            <option value="Saraswati">Saraswati</option>
+            <option value="Lakshmi">Lakshmi</option>
+            <option value="Vishwakarma">Vishwakarma</option>
+          </select>
+        </div>
+
+        <!-- Size Dimensions -->
+        <div class="form-group">
+          <label for="edit-dimensions">Dimensions</label>
+          <input type="text" id="edit-dimensions" />
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="edit-description">Description</label>
+        <textarea id="edit-description" rows="3" required></textarea>
+      </div>
+
+      <!-- Replace Image File -->
+      <div class="form-group">
+        <label>Replace Sculpture Image (leave empty to keep current)</label>
+        <input type="file" id="newImageFile" accept="image/*" />
+        <div class="image-preview-box" id="newImagePreview" style="margin-top:0.5rem; height: 4rem;">
+          <!-- Shows current thumb or new preview thumb -->
+          <img id="edit-image-current" src="" style="width: 100%; height: 100%; object-fit: contain;" />
+        </div>
+      </div>
+
+      <div class="detail-modal-actions" style="margin-top: 1.5rem;">
+        <button type="submit" class="btn btn-gold" style="flex-grow:1;">Save Updates</button>
+        <button type="button" class="btn btn-chocolate" onclick="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Global dashboard data collections
+  let allBookings = [];
+  let allInquiries = [];
+  let allGallery = [];
+
+  // 1. Tab switching logic
+  function switchTab(tabId, element) {
+    const btn = element || document.querySelector(`.tab-btn[onclick*="'${tabId}'"]`);
+    
+    // Toggle active tab buttons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+
+    // Toggle active tab panels
+    document.querySelectorAll('.tab-panel').forEach(panel => panel.style.display = 'none');
+    
+    const panel = document.getElementById(`${tabId}-panel`);
+    if (panel) {
+      panel.style.display = tabId === 'gallery' ? 'grid' : 'block';
+    }
+
+    // Lazy load datasets
+    if (tabId === 'bookings') loadBookingsQueue();
+    if (tabId === 'gallery') loadGalleryQueue();
+    if (tabId === 'inquiries') loadInquiriesQueue();
+
+    sessionStorage.setItem('adminActiveTab', tabId);
+  }
+
+  // 2. Fetch bookings list
+  async function loadBookingsQueue() {
+    const wrapper = document.getElementById('bookings-table-wrapper');
+    wrapper.innerHTML = `<div style="text-align:center; padding:3rem;"><div class="spinner" style="margin:0 auto; width:2rem; height:2rem;"></div><p style="font-size:0.75rem; margin-top:0.5rem; color:var(--text-muted);">Fetching bookings queue...</p></div>`;
+    
+    try {
+      const response = await fetch('/api/bookings');
+      const result = await response.json();
+      
+      if (result.success) {
+        allBookings = result.data;
+        if (allBookings.length === 0) {
+          wrapper.innerHTML = `<p style="text-align:center; padding:3rem; color:var(--text-muted); font-size:0.875rem;">No consultation bookings found in the database.</p>`;
+          return;
+        }
+
+        let html = `
+          <table class="queue-table">
+            <thead>
+              <tr>
+                <th>Client Name</th>
+                <th>Contact Info</th>
+                <th>Sculpture Details</th>
+                <th>Meeting Date</th>
+                <th style="text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        allBookings.forEach(b => {
+          const dateStr = new Date(b.meetingDate).toLocaleDateString('en-IN', {
+            year: 'numeric', month: 'short', day: 'numeric'
+          });
+
+          html += `
+            <tr>
+              <td style="font-weight:600; color:var(--studio-chocolate);">${b.fullName}</td>
+              <td>
+                <p>${b.email}</p>
+                <p style="color:var(--text-muted); font-size:11px;">${b.phoneNumber}</p>
+              </td>
+              <td>
+                <p style="font-weight:500;">${b.sculptureType}</p>
+                <p style="color:var(--text-muted); font-size:11px;">Size: ${b.preferredSize} • Budget: ${b.budget}</p>
+              </td>
+              <td>${dateStr}</td>
+              <td>
+                <div class="action-row">
+                  <button class="action-btn-circle view" title="View details" onclick="openRequestDetailModal('booking', '${encodeURIComponent(JSON.stringify(b))}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                  <button class="action-btn-circle delete" title="Delete request" onclick="deleteBookingRecord('${b._id}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        wrapper.innerHTML = html;
+      }
+    } catch (err) {
+      wrapper.innerHTML = `<p style="text-align:center; padding:3rem; color:red; font-size:0.875rem;">Failed to fetch bookings list.</p>`;
+    }
+  }
+
+  // 3. Fetch inquiries list
+  async function loadInquiriesQueue() {
+    const wrapper = document.getElementById('inquiries-table-wrapper');
+    wrapper.innerHTML = `<div style="text-align:center; padding:3rem;"><div class="spinner" style="margin:0 auto; width:2rem; height:2rem;"></div><p style="font-size:0.75rem; margin-top:0.5rem; color:var(--text-muted);">Fetching messages...</p></div>`;
+    
+    try {
+      const response = await fetch('/api/inquiries');
+      const result = await response.json();
+      
+      if (result.success) {
+        allInquiries = result.data;
+        if (allInquiries.length === 0) {
+          wrapper.innerHTML = `<p style="text-align:center; padding:3rem; color:var(--text-muted); font-size:0.875rem;">No message inquiries found in the database.</p>`;
+          return;
+        }
+
+        let html = `
+          <table class="queue-table">
+            <thead>
+              <tr>
+                <th>Sender Name</th>
+                <th>Email Address</th>
+                <th>Message Subject</th>
+                <th>Date Received</th>
+                <th style="text-align:center;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        allInquiries.forEach(i => {
+          const dateStr = new Date(i.createdAt).toLocaleDateString('en-IN', {
+            year: 'numeric', month: 'short', day: 'numeric'
+          });
+
+          html += `
+            <tr>
+              <td style="font-weight:600; color:var(--studio-chocolate);">${i.fullName}</td>
+              <td>${i.email}</td>
+              <td style="font-weight:500;">${i.subject}</td>
+              <td>${dateStr}</td>
+              <td>
+                <div class="action-row">
+                  <button class="action-btn-circle view" title="View details" onclick="openRequestDetailModal('inquiry', '${encodeURIComponent(JSON.stringify(i))}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                  </button>
+                  <button class="action-btn-circle delete" title="Delete request" onclick="deleteInquiryRecord('${i._id}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        });
+
+        html += `</tbody></table>`;
+        wrapper.innerHTML = html;
+      }
+    } catch (err) {
+      wrapper.innerHTML = `<p style="text-align:center; padding:3rem; color:red; font-size:0.875rem;">Failed to fetch inquiries list.</p>`;
+    }
+  }
+
+  // 4. Fetch gallery list
+  async function loadGalleryQueue() {
+    const listWrapper = document.getElementById('gallery-items-list');
+    listWrapper.innerHTML = `<div style="text-align:center; padding:3rem;"><div class="spinner" style="margin:0 auto; width:2rem; height:2rem;"></div></div>`;
+    
+    try {
+      const response = await fetch('/api/gallery');
+      const result = await response.json();
+      
+      if (result.success) {
+        allGallery = result.data;
+        if (allGallery.length === 0) {
+          listWrapper.innerHTML = `<p style="text-align:center; padding:3rem; color:var(--text-muted); font-size:0.75rem;">No sculptures live on the portfolio.</p>`;
+          return;
+        }
+
+        let html = '';
+        allGallery.forEach(item => {
+          html += `
+            <div class="portfolio-list-item">
+              <div class="portfolio-thumb">
+                <img src="${item.imageUrl}" alt="${item.title}" />
+              </div>
+              <div class="portfolio-list-info">
+                <p class="cat">${item.category}</p>
+                <h4>${item.title}</h4>
+                <p class="desc">${item.description}</p>
+              </div>
+              <div class="portfolio-item-actions">
+                <button class="action-btn-circle view" title="Edit" onclick="openGalleryEditModal('${encodeURIComponent(JSON.stringify(item))}')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                </button>
+                <button class="action-btn-circle delete" title="Delete" onclick="deleteGalleryRecord('${item._id}')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        listWrapper.innerHTML = html;
+      }
+    } catch (err) {
+      listWrapper.innerHTML = `<p style="color:red; font-size:0.75rem; text-align:center; padding:3rem;">Failed to fetch gallery list.</p>`;
+    }
+  }
+
+  // 5. Delete operations
+  async function deleteBookingRecord(id) {
+    if (!confirm('Are you sure you want to delete this booking request?')) return;
+    try {
+      // We pass the JWT token cookie implicitly since EJS uses local cookie domains
+      const response = await fetch(`/api/bookings/${id}`, { method: 'DELETE' });
+      const result = await response.json();
+      if (result.success) {
+        showToast('Success', 'Booking deleted successfully.');
+        window.location.reload();
+      } else {
+        showToast('Error', result.message || 'Failed to delete booking.', 'error');
+      }
+    } catch (err) {
+      showToast('Error', 'Server connection failure.', 'error');
+    }
+  }
+
+  async function deleteInquiryRecord(id) {
+    if (!confirm('Are you sure you want to delete this contact message inquiry?')) return;
+    try {
+      const response = await fetch(`/api/inquiries/${id}`, { method: 'DELETE' });
+      const result = await response.json();
+      if (result.success) {
+        showToast('Success', 'Inquiry deleted successfully.');
+        window.location.reload();
+      } else {
+        showToast('Error', result.message || 'Failed to delete inquiry.', 'error');
+      }
+    } catch (err) {
+      showToast('Error', 'Server connection failure.', 'error');
+    }
+  }
+
+  async function deleteGalleryRecord(id) {
+    if (!confirm('Are you sure you want to delete this portfolio item from the gallery? This deletes the file from Cloudinary.')) return;
+    try {
+      const response = await fetch(`/api/gallery/${id}`, { method: 'DELETE' });
+      const result = await response.json();
+      if (result.success) {
+        showToast('Success', 'Portfolio item removed successfully.');
+        window.location.reload();
+      } else {
+        showToast('Error', result.message || 'Failed to delete item.', 'error');
+      }
+    } catch (err) {
+      showToast('Error', 'Server connection failure.', 'error');
+    }
+  }
+
+  // 6. Detail View Modal handling
+  let currentDetailData = null;
+  let currentDetailType = null;
+
+  function openRequestDetailModal(type, encodedData) {
+    const data = JSON.parse(decodeURIComponent(encodedData));
+    currentDetailData = data;
+    currentDetailType = type;
+    
+    document.getElementById('detail-name').innerText = data.fullName;
+    document.getElementById('detail-date').innerText = `Received: ${new Date(data.createdAt).toLocaleString('en-IN')}`;
+    document.getElementById('detail-body').innerText = `"${data.message}"`;
+    
+    // Hide reply form initially and show action buttons
+    document.getElementById('reply-form-container').style.display = 'none';
+    document.getElementById('detail-modal-actions-container').style.display = 'flex';
+
+    // Hook up delete button in modal
+    const deleteBtn = document.getElementById('detail-delete-btn');
+    if (deleteBtn) {
+      deleteBtn.onclick = async () => {
+        if (type === 'booking') {
+          await deleteBookingRecord(data._id);
+        } else {
+          await deleteInquiryRecord(data._id);
+        }
+      };
+    }
+    
+    const metaGrid = document.getElementById('detail-meta-grid');
+    if (type === 'booking') {
+      document.getElementById('detail-badge').innerText = 'Consultation Request';
+      
+      const dateStr = new Date(data.meetingDate).toLocaleDateString('en-IN', {
+        weekday: 'long', day: 'numeric', month: 'short'
+      });
+
+      metaGrid.innerHTML = `
+        <p><strong>Phone:</strong> ${data.phoneNumber}</p>
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Sculpture:</strong> ${data.sculptureType}</p>
+        <p><strong>Size:</strong> ${data.preferredSize}</p>
+        <p><strong>Budget:</strong> ${data.budget}</p>
+        <p><strong>Meeting Date:</strong> ${dateStr}</p>
+      `;
+    } else {
+      document.getElementById('detail-badge').innerText = 'General Inquiry';
+      metaGrid.innerHTML = `
+        <p><strong>Email:</strong> ${data.email}</p>
+        <p><strong>Subject:</strong> ${data.subject}</p>
+      `;
+    }
+
+    document.getElementById('detail-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeDetailModal() {
+    document.getElementById('detail-modal').style.display = 'none';
+    document.body.style.overflow = '';
+    currentDetailData = null;
+    currentDetailType = null;
+  }
+
+  // 7. Gallery upload submission handler
+  const uploadForm = document.getElementById('gallery-upload-form');
+  if (uploadForm) {
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = uploadForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      
+      const fileInput = document.getElementById('imageFile');
+      if (!fileInput.files || fileInput.files.length === 0) {
+        showToast('Error', 'Please select an image file to upload.', 'error');
+        return;
+      }
+
+      const fd = new FormData();
+      fd.append('title', document.getElementById('upload-title').value);
+      fd.append('category', document.getElementById('upload-category').value);
+      fd.append('dimensions', document.getElementById('upload-dimensions').value);
+      fd.append('description', document.getElementById('upload-description').value);
+      fd.append('image', fileInput.files[0]);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<div class="spinner"></div> Uploading...`;
+
+      try {
+        const response = await fetch('/api/gallery', {
+          method: 'POST',
+          body: fd // Sends multipart form-data
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('Success', 'Sculpture published successfully!');
+          uploadForm.reset();
+          const previewBox = document.getElementById('imagePreview');
+          if (previewBox) previewBox.innerHTML = '';
+          
+          loadGalleryQueue();
+        } else {
+          showToast('Error', result.message || 'Failed to upload sculpture.', 'error');
+        }
+      } catch (err) {
+        console.error('Gallery Upload Error:', err);
+        showToast('Error', 'Could not establish connection to upload.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // 8. Gallery Edit modal handling
+  function openGalleryEditModal(encodedData) {
+    const item = JSON.parse(decodeURIComponent(encodedData));
+    
+    document.getElementById('edit-id').value = item._id;
+    document.getElementById('edit-title').value = item.title;
+    document.getElementById('edit-category').value = item.category;
+    document.getElementById('edit-dimensions').value = item.dimensions || '';
+    document.getElementById('edit-description').value = item.description;
+    
+    // Set current thumbnail preview
+    document.getElementById('edit-image-current').src = item.imageUrl;
+    document.getElementById('newImageFile').value = ''; // clear input
+    
+    // Clear dynamic new preview if loaded previously
+    const newPreview = document.getElementById('newImagePreview');
+    newPreview.innerHTML = `<img id="edit-image-current" src="${item.imageUrl}" style="width: 100%; height: 100%; object-fit: contain;" />`;
+    setupImagePreviewListener('newImageFile', 'newImagePreview');
+
+    document.getElementById('gallery-edit-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeEditModal() {
+    document.getElementById('gallery-edit-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  // Gallery Update form submit
+  const updateForm = document.getElementById('gallery-update-form');
+  if (updateForm) {
+    updateForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const submitBtn = updateForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      
+      const id = document.getElementById('edit-id').value;
+      const fileInput = document.getElementById('newImageFile');
+
+      const fd = new FormData();
+      fd.append('title', document.getElementById('edit-title').value);
+      fd.append('category', document.getElementById('edit-category').value);
+      fd.append('dimensions', document.getElementById('edit-dimensions').value);
+      fd.append('description', document.getElementById('edit-description').value);
+      
+      if (fileInput.files && fileInput.files.length > 0) {
+        fd.append('image', fileInput.files[0]);
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<div class="spinner"></div> Saving...`;
+
+      try {
+        const response = await fetch(`/api/gallery/${id}`, {
+          method: 'PUT',
+          body: fd
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('Success', 'Sculpture updated successfully!');
+          closeEditModal();
+          loadGalleryQueue();
+        } else {
+          showToast('Error', result.message || 'Failed to update sculpture details.', 'error');
+        }
+      } catch (err) {
+        console.error('Gallery Edit Error:', err);
+        showToast('Error', 'Connection failure while updating.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Change Username form submit
+  const usernameForm = document.getElementById('change-username-form');
+  if (usernameForm) {
+    usernameForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newUsername = document.getElementById('new-username').value;
+      const currentPassword = document.getElementById('username-confirm-password').value;
+      
+      const submitBtn = usernameForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Updating...';
+
+      try {
+        const response = await fetch('/api/auth/update-account', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username: newUsername, currentPassword })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('Success', 'Username updated successfully! Please reload or use your new username.');
+          usernameForm.reset();
+        } else {
+          showToast('Error', result.message || 'Failed to update username.', 'error');
+        }
+      } catch (err) {
+        showToast('Error', 'Server connection error.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Change Password form submit
+  const passwordForm = document.getElementById('change-password-form');
+  if (passwordForm) {
+    passwordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmNewPassword = document.getElementById('confirm-new-password').value;
+
+      if (newPassword !== confirmNewPassword) {
+        showToast('Error', 'New passwords do not match.', 'error');
+        return;
+      }
+
+      const submitBtn = passwordForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Updating...';
+
+      try {
+        const response = await fetch('/api/auth/update-account', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ currentPassword, newPassword })
+        });
+        const result = await response.json();
+        if (result.success) {
+          showToast('Success', 'Password updated successfully!');
+          passwordForm.reset();
+        } else {
+          showToast('Error', result.message || 'Failed to update password.', 'error');
+        }
+      } catch (err) {
+        showToast('Error', 'Server connection error.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Test Email form submit
+  const testEmailForm = document.getElementById('test-email-form');
+  const testEmailResult = document.getElementById('test-email-result');
+  if (testEmailForm && testEmailResult) {
+    testEmailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const testRecipient = document.getElementById('test-recipient').value;
+      
+      const submitBtn = testEmailForm.querySelector('button[type="submit"]');
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = 'Testing...';
+      
+      testEmailResult.style.display = 'none';
+      testEmailResult.className = '';
+      testEmailResult.innerHTML = '';
+
+      try {
+        const response = await fetch('/api/auth/test-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ testRecipient })
+        });
+        const result = await response.json();
+        
+        testEmailResult.style.display = 'block';
+        if (result.success) {
+          testEmailResult.style.backgroundColor = '#d4edda';
+          testEmailResult.style.color = '#155724';
+          testEmailResult.style.border = '1px solid #c3e6cb';
+          testEmailResult.innerHTML = `<strong>Success!</strong> ${result.message}`;
+          showToast('Success', 'Test email sent successfully!');
+        } else {
+          testEmailResult.style.backgroundColor = '#f8d7da';
+          testEmailResult.style.color = '#721c24';
+          testEmailResult.style.border = '1px solid #f5c6cb';
+          testEmailResult.innerHTML = `<strong>Failed!</strong> ${result.message}`;
+          showToast('Error', 'Test email failed to send.', 'error');
+        }
+      } catch (err) {
+        testEmailResult.style.display = 'block';
+        testEmailResult.style.backgroundColor = '#f8d7da';
+        testEmailResult.style.color = '#721c24';
+        testEmailResult.style.border = '1px solid #f5c6cb';
+        testEmailResult.innerHTML = `<strong>Error!</strong> Could not connect to the API.`;
+        showToast('Error', 'Server connection failure.', 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Handle Reply Form Interactions
+  const replyBtn = document.getElementById('detail-reply-btn');
+  const replyFormContainer = document.getElementById('reply-form-container');
+  const actionsContainer = document.getElementById('detail-modal-actions-container');
+  const cancelReplyBtn = document.getElementById('cancel-reply-btn');
+  const submitReplyBtn = document.getElementById('submit-reply-btn');
+
+  if (replyBtn && replyFormContainer && actionsContainer && cancelReplyBtn && submitReplyBtn) {
+    replyBtn.addEventListener('click', () => {
+      if (!currentDetailData) return;
+
+      // Populate reply fields
+      const isBooking = currentDetailType === 'booking';
+      const subjectPrefix = `Re: Clay Art Studio - `;
+      const subjectText = isBooking ? 'Consultation Booking' : (currentDetailData.subject || 'Inquiry');
+      
+      document.getElementById('reply-subject').value = subjectPrefix + subjectText;
+      document.getElementById('reply-message').value = `Dear ${currentDetailData.fullName},\n\nThank you for reaching out to us.\n\n`;
+
+      // Show reply form and hide actions
+      replyFormContainer.style.display = 'block';
+      actionsContainer.style.display = 'none';
+    });
+
+    cancelReplyBtn.addEventListener('click', () => {
+      replyFormContainer.style.display = 'none';
+      actionsContainer.style.display = 'flex';
+    });
+
+    submitReplyBtn.addEventListener('click', async () => {
+      const to = currentDetailData.email;
+      const subject = document.getElementById('reply-subject').value;
+      const message = document.getElementById('reply-message').value;
+      const originalMessage = currentDetailData.message;
+
+      if (!subject || !message) {
+        showToast('Error', 'Please fill in both Subject and Message fields.', 'error');
+        return;
+      }
+
+      const originalText = submitReplyBtn.innerHTML;
+      submitReplyBtn.disabled = true;
+      submitReplyBtn.innerHTML = 'Sending...';
+
+      try {
+        const response = await fetch('/api/dashboard/reply', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ to, subject, message, originalMessage })
+        });
+        const result = await response.json();
+
+        if (result.success) {
+          showToast('Success', 'Reply email sent successfully!');
+          replyFormContainer.style.display = 'none';
+          actionsContainer.style.display = 'flex';
+        } else {
+          showToast('Error', result.message || 'Failed to send reply email.', 'error');
+        }
+      } catch (err) {
+        showToast('Error', 'Server connection failure.', 'error');
+      } finally {
+        submitReplyBtn.disabled = false;
+        submitReplyBtn.innerHTML = originalText;
+      }
+    });
+  }
+
+  // Restore active tab on load
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedTab = sessionStorage.getItem('adminActiveTab') || 'overview';
+    if (savedTab !== 'overview') {
+      switchTab(savedTab);
+    }
+  });
+</script>
+
+<%- include('partials/footer') %>

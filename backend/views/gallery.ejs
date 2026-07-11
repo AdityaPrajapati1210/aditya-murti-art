@@ -1,0 +1,143 @@
+<%- include('partials/header') %>
+
+<section class="py-16 px-6" style="background-color: var(--studio-cream); min-height: 100vh;">
+  <div class="max-w-7xl" style="display: flex; flex-direction: column; gap: 3rem;">
+    
+    <!-- Header -->
+    <div class="section-header">
+      <p class="sub">Handcrafted Showcase</p>
+      <h2>Sculpture Portfolio</h2>
+      <div class="divider"></div>
+      <p class="desc">Browse our completed clay projects. Each sculpture is handcrafted according to custom order specifications.</p>
+    </div>
+
+    <!-- Filter Tabs (reloads page with category filter) -->
+    <div class="filter-tabs">
+      <% 
+        const categories = [
+          'All',
+          'Religious Murti',
+          'Ganesha',
+          'Durga Maa',
+          'Kali Maa',
+          'Krishna',
+          'Saraswati',
+          'Lakshmi',
+          'Vishwakarma'
+        ];
+      %>
+      <% categories.forEach(cat => { %>
+        <a href="/gallery?category=<%= encodeURIComponent(cat) %>" 
+           class="filter-btn <%= selectedCategory === cat ? 'active' : '' %>">
+          <%= cat %>
+        </a>
+      <% }) %>
+    </div>
+
+    <!-- Gallery Grid -->
+    <% if (items.length === 0) { %>
+      <div style="text-align: center; padding: 5rem 0; border: 1px dashed var(--studio-beige); border-radius: 4px; max-width: 28rem; margin: 0 auto; width: 100%;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--studio-gold)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem; opacity: 0.5;"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"></path><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <p style="color: var(--text-muted); font-size: 0.875rem;">No sculptures found in this category.</p>
+      </div>
+    <% } else { %>
+      <div class="gallery-grid grid">
+        <% items.forEach(item => { %>
+          <div class="gallery-card" 
+               data-title="<%= item.title %>"
+               data-category="<%= item.category %>"
+               data-dimensions="<%= item.dimensions || 'N/A' %>"
+               data-description="<%= item.description %>"
+               data-image="<%= item.imageUrl %>"
+               onclick="openGalleryModal(this)">
+            
+            <div class="gallery-image-wrapper">
+              <img src="<%= item.imageUrl %>" alt="<%= item.title %>" loading="lazy" />
+              <!-- Hover Overlay -->
+              <div class="gallery-overlay">
+                <div class="gallery-overlay-content">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+                  <h4><%= item.title %></h4>
+                  <p class="cat"><%= item.category %></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="gallery-info">
+              <h3><%= item.title %></h3>
+              <div class="gallery-meta">
+                <span class="tag"><%= item.category %></span>
+                <% if (item.dimensions) { %>
+                  <span>Size: <%= item.dimensions %></span>
+                <% } %>
+              </div>
+            </div>
+
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+  </div>
+</section>
+
+<!-- Lightbox Modal Backdrop -->
+<div class="modal-backdrop" id="gallery-modal" style="display: none;" onclick="closeGalleryModal()">
+  <!-- Close Button -->
+  <button class="modal-close" onclick="closeGalleryModal()">&times;</button>
+  
+  <!-- Modal box -->
+  <div class="modal-content-box" onclick="event.stopPropagation()">
+    <!-- Left Image -->
+    <div class="modal-img-sec">
+      <img id="modal-img" src="" alt="Sculpture detail view" />
+    </div>
+
+    <!-- Right Details -->
+    <div class="modal-det-sec">
+      <div class="modal-details">
+        <span class="category" id="modal-category">Category</span>
+        <h2 id="modal-title">Sculpture Title</h2>
+        <div class="divider"></div>
+        <div class="modal-size" id="modal-size">Dimensions: 3 Feet</div>
+        <p class="modal-desc" id="modal-desc">Detailed descriptions of the sculpture...</p>
+      </div>
+
+      <div class="modal-actions">
+        <a id="modal-inquire-btn" href="" class="btn btn-chocolate" style="width: 100%; text-align: center; display: block;">Inquire About Custom Creation</a>
+        <span class="modal-btn-close" onclick="closeGalleryModal()">Close Details</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function openGalleryModal(cardElement) {
+    const title = cardElement.getAttribute('data-title');
+    const category = cardElement.getAttribute('data-category');
+    const dimensions = cardElement.getAttribute('data-dimensions');
+    const description = cardElement.getAttribute('data-description');
+    const image = cardElement.getAttribute('data-image');
+
+    document.getElementById('modal-img').src = image;
+    document.getElementById('modal-title').innerText = title;
+    document.getElementById('modal-category').innerText = category;
+    document.getElementById('modal-size').innerHTML = `<strong>Dimensions:</strong> ${dimensions}`;
+    document.getElementById('modal-desc').innerText = description;
+    
+    // Configure inquiry button link
+    const inquireBtn = document.getElementById('modal-inquire-btn');
+    inquireBtn.href = `/book?service=${encodeURIComponent(category)}&title=${encodeURIComponent(title)}`;
+
+    // Show modal
+    document.getElementById('gallery-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; 
+  }
+
+  function closeGalleryModal() {
+    document.getElementById('gallery-modal').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+</script>
+
+<%- include('partials/footer') %>
