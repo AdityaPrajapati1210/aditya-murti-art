@@ -349,9 +349,15 @@
         <label for="reply-message" style="display:block; font-size:12px; margin-bottom:0.25rem; font-weight:bold; color: var(--studio-chocolate);">Message</label>
         <textarea id="reply-message" rows="5" style="width:100%; padding:0.5rem; border:1px solid var(--border-color); border-radius:4px; font-family:inherit; resize:vertical; background-color: var(--studio-white); color: var(--text-color);"></textarea>
       </div>
-      <div class="reply-form-actions" style="display: flex; gap: 0.5rem;">
-        <button id="submit-reply-btn" class="btn btn-gold" style="flex-grow: 1;">Send Email Reply</button>
-        <button id="cancel-reply-btn" class="btn btn-chocolate">Cancel</button>
+      <div class="reply-form-actions" style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem;">
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="reply-gmail-btn" class="btn btn-gold" style="flex-grow: 1; padding: 0.6rem 1rem; font-size: 0.8rem;"><i class="bi bi-google" style="margin-right: 4px;"></i>Gmail (Web)</button>
+          <button id="reply-mailto-btn" class="btn btn-gold" style="flex-grow: 1; padding: 0.6rem 1rem; font-size: 0.8rem;"><i class="bi bi-envelope-fill" style="margin-right: 4px;"></i>Mail App</button>
+        </div>
+        <div style="display: flex; gap: 0.5rem;">
+          <button id="reply-copy-btn" class="btn" style="flex-grow: 1; padding: 0.6rem 1rem; font-size: 0.8rem; background-color: var(--studio-beige); color: var(--studio-chocolate); border: 1px solid rgba(61, 39, 29, 0.15);"><i class="bi bi-clipboard-check" style="margin-right: 4px;"></i>Copy Text</button>
+          <button id="cancel-reply-btn" class="btn btn-chocolate" style="padding: 0.6rem 1.5rem; font-size: 0.8rem;">Cancel</button>
+        </div>
       </div>
     </div>
 
@@ -1044,7 +1050,8 @@
       actionsContainer.style.display = 'flex';
     });
 
-    submitReplyBtn.addEventListener('click', () => {
+    // 1. Reply via Web Gmail
+    document.getElementById('reply-gmail-btn').addEventListener('click', () => {
       const to = currentDetailData.email;
       const subject = document.getElementById('reply-subject').value;
       const message = document.getElementById('reply-message').value;
@@ -1055,14 +1062,60 @@
         return;
       }
 
-      // Open in Web Gmail Compose directly in a new tab (works in any browser without requiring Windows mail client configuration)
+      const bodyText = `${message}\n\n-----------------------------\nOriginal Message:\n${originalMessage}`;
       const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
       window.open(gmailUrl, '_blank');
 
-      // Close the reply form and restore UI
       replyFormContainer.style.display = 'none';
       actionsContainer.style.display = 'flex';
-      showToast('Success', 'Opening email composer...');
+      showToast('Success', 'Opening Gmail...');
+    });
+
+    // 2. Reply via Mail App (mailto:)
+    document.getElementById('reply-mailto-btn').addEventListener('click', () => {
+      const to = currentDetailData.email;
+      const subject = document.getElementById('reply-subject').value;
+      const message = document.getElementById('reply-message').value;
+      const originalMessage = currentDetailData.message || '';
+
+      if (!subject || !message) {
+        showToast('Error', 'Please fill in both Subject and Message fields.', 'error');
+        return;
+      }
+
+      const bodyText = `${message}\n\n-----------------------------\nOriginal Message:\n${originalMessage}`;
+      const mailtoUrl = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+      window.location.href = mailtoUrl;
+
+      replyFormContainer.style.display = 'none';
+      actionsContainer.style.display = 'flex';
+      showToast('Success', 'Opening Mail App...');
+    });
+
+    // 3. Copy reply text to clipboard
+    document.getElementById('reply-copy-btn').addEventListener('click', () => {
+      const message = document.getElementById('reply-message').value;
+      if (!message) {
+        showToast('Error', 'No message content to copy.', 'error');
+        return;
+      }
+
+      navigator.clipboard.writeText(message).then(() => {
+        showToast('Success', 'Message text copied to clipboard!');
+      }).catch(err => {
+        // Fallback for older browsers or HTTP origins
+        const textArea = document.createElement("textarea");
+        textArea.value = message;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+          document.execCommand('copy');
+          showToast('Success', 'Message text copied!');
+        } catch (e) {
+          showToast('Error', 'Failed to copy text.', 'error');
+        }
+        document.body.removeChild(textArea);
+      });
     });
   }
 
