@@ -19,10 +19,11 @@ const sendEmail = async ({ to, subject, html }) => {
     // 1. If RESEND_API_KEY is configured, send via Resend REST API (bypasses Render SMTP port blocking)
     if (process.env.RESEND_API_KEY) {
       return new Promise((resolve, reject) => {
-        // Resend Free Tier defaults to sending from onboarding@resend.dev to the account owner
+        // Resend Free Tier defaults to sending from onboarding@resend.dev to the account owner.
+        // If a custom domain is verified, you can set RESEND_FROM_EMAIL to your domain email (e.g. info@adityamurtiart.com)
         const fromEmail = process.env.EMAIL_FROM_NAME 
-          ? `"${process.env.EMAIL_FROM_NAME}" <onboarding@resend.dev>` 
-          : '"Aditya Murti Art" <onboarding@resend.dev>';
+          ? `"${process.env.EMAIL_FROM_NAME}" <${process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'}>` 
+          : `"Aditya Murti Art" <${process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'}>`;
 
         const postData = JSON.stringify({
           from: fromEmail,
