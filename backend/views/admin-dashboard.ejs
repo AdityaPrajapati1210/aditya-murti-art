@@ -1044,44 +1044,28 @@
       actionsContainer.style.display = 'flex';
     });
 
-    submitReplyBtn.addEventListener('click', async () => {
+    submitReplyBtn.addEventListener('click', () => {
       const to = currentDetailData.email;
       const subject = document.getElementById('reply-subject').value;
       const message = document.getElementById('reply-message').value;
-      const originalMessage = currentDetailData.message;
+      const originalMessage = currentDetailData.message || '';
 
       if (!subject || !message) {
         showToast('Error', 'Please fill in both Subject and Message fields.', 'error');
         return;
       }
 
-      const originalText = submitReplyBtn.innerHTML;
-      submitReplyBtn.disabled = true;
-      submitReplyBtn.innerHTML = 'Sending...';
+      // Format the mailto URL with prefilled body
+      const bodyText = `${message}\n\n-----------------------------\nOriginal Message:\n${originalMessage}`;
+      const mailtoUrl = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+      
+      // Open in local mail client (Gmail, Outlook, etc.)
+      window.location.href = mailtoUrl;
 
-      try {
-        const response = await fetch('/api/dashboard/reply', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ to, subject, message, originalMessage })
-        });
-        const result = await response.json();
-
-        if (result.success) {
-          showToast('Success', 'Reply email sent successfully!');
-          replyFormContainer.style.display = 'none';
-          actionsContainer.style.display = 'flex';
-        } else {
-          showToast('Error', result.message || 'Failed to send reply email.', 'error');
-        }
-      } catch (err) {
-        showToast('Error', 'Server connection failure.', 'error');
-      } finally {
-        submitReplyBtn.disabled = false;
-        submitReplyBtn.innerHTML = originalText;
-      }
+      // Close the reply form and restore UI
+      replyFormContainer.style.display = 'none';
+      actionsContainer.style.display = 'flex';
+      showToast('Success', 'Opening email composer...');
     });
   }
 
