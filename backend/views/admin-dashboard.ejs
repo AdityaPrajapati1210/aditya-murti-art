@@ -1055,12 +1055,9 @@
         return;
       }
 
-      // Format the mailto URL with prefilled body
-      const bodyText = `${message}\n\n-----------------------------\nOriginal Message:\n${originalMessage}`;
-      const mailtoUrl = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
-      
-      // Open in local mail client (Gmail, Outlook, etc.)
-      window.location.href = mailtoUrl;
+      // Open in Web Gmail Compose directly in a new tab (works in any browser without requiring Windows mail client configuration)
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyText)}`;
+      window.open(gmailUrl, '_blank');
 
       // Close the reply form and restore UI
       replyFormContainer.style.display = 'none';
