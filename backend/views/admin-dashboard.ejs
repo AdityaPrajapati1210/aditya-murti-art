@@ -1026,9 +1026,11 @@
   const replyFormContainer = document.getElementById('reply-form-container');
   const actionsContainer = document.getElementById('detail-modal-actions-container');
   const cancelReplyBtn = document.getElementById('cancel-reply-btn');
-  const submitReplyBtn = document.getElementById('submit-reply-btn');
+  const replyGmailBtn = document.getElementById('reply-gmail-btn');
+  const replyMailtoBtn = document.getElementById('reply-mailto-btn');
+  const replyCopyBtn = document.getElementById('reply-copy-btn');
 
-  if (replyBtn && replyFormContainer && actionsContainer && cancelReplyBtn && submitReplyBtn) {
+  if (replyBtn && replyFormContainer && actionsContainer && cancelReplyBtn && replyGmailBtn && replyMailtoBtn && replyCopyBtn) {
     replyBtn.addEventListener('click', () => {
       if (!currentDetailData) return;
 
