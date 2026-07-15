@@ -1,6 +1,6 @@
-# Jeetendra Prajapati Clay Art Studio Website
+# Aditya Murti Art Website
 
-A complete, production-ready, full-stack monolithic web application built for **Jeetendra Prajapati Clay Art Studio**, a professional clay sculptor business based in **Bhiti Mau, Uttar Pradesh, India**.
+A complete, production-ready, full-stack monolithic web application built for **Aditya Murti Art**, a professional clay sculptor business based in **Bhiti Mau, Uttar Pradesh, India**.
 
 This website features a luxury artisan theme, a dynamic sculpture portfolio, a consultation booking system with client/admin email notifications, contact inquiries storage, and a secured admin dashboard to manage bookings, messages, and gallery items.
 
